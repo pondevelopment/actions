@@ -3,7 +3,6 @@ description: "Basic NodeJS CI"
 inputs:
   NPM_REGISTRY_TOKEN:
     required: true
-    default: "uat"
     description: "Your personal access token - PAT"
   NODE_VERSION:
     required: true

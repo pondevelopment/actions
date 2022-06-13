@@ -3,7 +3,6 @@ description: "Use SonarCloud to get insight into code quality"
 inputs:
   NPM_REGISTRY_TOKEN:
     required: true
-    default: "uat"
     description: "Your personal access token - PAT"
 runs:
   using: "composite"
