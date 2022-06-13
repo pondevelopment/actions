@@ -28,3 +28,4 @@ runs:
       shell: bash
       env:
         CI: "true"
+        NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
