@@ -4,6 +4,12 @@ inputs:
   NPM_REGISTRY_TOKEN:
     required: true
     description: "Your personal access token - PAT"
+  SONAR_TOKEN:
+    required: true
+    description: "The Sonar Cloud Token"
+  GITHUB_TOKEN:
+    required: true
+    description: "The Github Token"
 runs:
   using: "composite"
   steps:
@@ -24,5 +30,5 @@ runs:
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ inputs.SONAR_TOKEN }}
