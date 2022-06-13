@@ -1,0 +1,31 @@
+name: "Node CI"
+description: "Basic NodeJS CI"
+inputs:
+  NPM_REGISTRY_TOKEN:
+    required: true
+    default: "uat"
+    description: "Your personal access token - PAT"
+  NODE_VERSION:
+    required: true
+    default: "16.14"
+    description: "The node version you would like to test"
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ inputs.NODE_VERSION }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.NODE_VERSION }}
+      env:
+        NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
+    - name: npm install, build, and test
+      run: |
+        npm ci
+        npm run vulnerabilities
+        npm run lint:report
+        npm run cpd
+        npm test
+      shell: bash
+      env:
+        CI: "true"
