@@ -1,0 +1,88 @@
+name: "Docker Build"
+description: "Build a docker image and push it to GCR"
+
+inputs:
+  GCP_SA_KEY:
+    required: true
+    description: "the secret serviceaccount json"
+  PROJECT_ID:
+    required: true
+    description: "gcp project target for the container"
+  SERVICE_NAME:
+    required: true
+    description: "the name provided to the docker container"
+  NPM_REGISTRY_TOKEN:
+    required: true
+    description: "Your personal access token - PAT"
+  DOCKER_TAG:
+    required: true
+    description: "the tag provided for the docker container"
+
+runs:
+  using: "composite"
+  steps:
+    - id: "auth"
+      uses: "google-github-actions/auth@v0"
+      with:
+        credentials_json: "${{ inputs.GCP_SA_KEY }}"
+    - name: "Set up Cloud SDK"
+      uses: "google-github-actions/setup-gcloud@v0"
+    - name: Setup Cloud SDK
+      uses: google-github-actions/setup-gcloud@0
+      with:
+        project_id: ${{ inputs.PROJECT_ID }}
+        export_default_credentials: true # Set to true to authenticate the Cloud Run action
+
+    - name: Authorize Docker push
+      shell: bash
+      run: gcloud auth configure-docker --quiet
+
+    - name: Prepare
+      shell: bash
+      id: prepare
+      run: |
+        TAG=${{ inputs.DOCKER_TAG }}
+        IMAGE="eu.gcr.io/${{ inputs.PROJECT_ID }}/${{ inputs.SERVICE_NAME }}"
+        echo ::set-output name=tagged_image::${IMAGE}:${TAG}
+        echo ::set-output name=tag::${TAG}
+    - name: Set up Docker Buildx
+      id: buildx
+      # Use the action from the master, as we've seen some inconsistencies with @v1
+      # Issue: https://github.com/docker/build-push-action/issues/286
+      uses: docker/setup-buildx-action@master
+      with:
+        install: true
+
+      # setup taken and adjusted from here: https://evilmartians.com/chronicles/build-images-on-github-actions-with-docker-layer-caching#the-cache-dance-off
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        # Key is named differently to avoid collision
+        key: ${{ runner.os }}-multi-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-multi-buildx
+    - name: Build development image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        builder: ${{ steps.buildx.outputs.name }}
+        file: Dockerfile
+        push: true
+        # Note: load is used to store the image in the local docker daemon for use in another step
+        #load: true
+        tags: ${{ steps.prepare.outputs.tagged_image }}
+        cache-from: type=local,src=/tmp/.buildx-cache
+        # Note the mode=max here
+        # More: https://github.com/moby/buildkit#--export-cache-options
+        # And: https://github.com/docker/buildx#--cache-tonametypetypekeyvalue
+        cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+        # build arg used for accessing the private repository for npm modules
+        build-args: |
+          "NPM_TOKEN=${{ inputs.NPM_REGISTRY_TOKEN }}"
+          "NODE_ENVIRONMENT=${{inputs.NODE_ENVIRONMENT}}"
+    - name: Move cache
+      shell: bash
+      run: |
+        rm -rf /tmp/.buildx-cache
+        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
