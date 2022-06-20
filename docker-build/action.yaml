@@ -18,7 +18,7 @@ inputs:
     required: true
     description: "the tag provided for the docker container"
 outputs:
-  docker_image:
+  DOCKER_IMAGE:
     description: "The docker image url"
     value: ${{steps.prepare.outputs.tagged_image}}
 
