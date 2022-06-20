@@ -17,12 +17,16 @@ inputs:
   DOCKER_TAG:
     required: true
     description: "the tag provided for the docker container"
+outputs:
+  docker_image:
+    description: "The docker image url"
+    value: ${{steps.prepare.outputs.tagged_image}}
 
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v3
-    
+
     - id: "auth"
       uses: "google-github-actions/auth@v0"
       with:
