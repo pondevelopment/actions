@@ -68,6 +68,7 @@ runs:
     - name: Logging
       shell: bash
       env:
-        TAGGED_IMAGE: ${{ steps.prepare.outputs.tagged_image }}
+        TAGGED_IMAGE: $(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64)
       run: |
-        echo "Docker Image: $TAGGED_IMAGE" 
+        echo "Docker Image:"
+        echo "$TAGGED_IMAGE" | base64 --decode 
