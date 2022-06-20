@@ -20,7 +20,7 @@ inputs:
 outputs:
   DOCKER_IMAGE:
     description: "The docker image url - base64 encoded"
-    value: $(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64)
+    value: ${{steps.prepare.outputs.tagged_image_enc}}
 
 runs:
   using: "composite"
@@ -49,6 +49,7 @@ runs:
         TAG=${{ inputs.DOCKER_TAG }}
         IMAGE="eu.gcr.io/${{ inputs.PROJECT_ID }}/${{ inputs.SERVICE_NAME }}"
         echo ::set-output name=tagged_image::${IMAGE}:${TAG}
+        echo ::set-output name=tagged_image_enc::$(echo -n '${IMAGE}:${TAG}' | base64)
         echo ::set-output name=tag::${TAG}
 
     - name: Build development image
@@ -70,5 +71,4 @@ runs:
       env:
         TAGGED_IMAGE: $(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64)
       run: |
-        echo "Docker Image:"
-        echo `echo $TAGGED_IMAGE | base64 --decode`
+        echo "Docker Image: $TAGGED_IMAGE"
