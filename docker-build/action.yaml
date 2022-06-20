@@ -51,6 +51,12 @@ runs:
         echo ::set-output name=tagged_image::${IMAGE}:${TAG}
         echo ::set-output name=tagged_image_enc::$(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64 | base64)
         echo ::set-output name=tag::${TAG}
+    
+    - name: Encode
+      shell: bash
+      id: encode
+      run: |
+        echo ::set-output name=tagged_image_enc::$(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64 | base64)
 
     - name: Build development image
       uses: docker/build-push-action@v3
@@ -69,6 +75,6 @@ runs:
     - name: Logging
       shell: bash
       env:
-        TAGGED_IMAGE: ${{steps.prepare.outputs.tagged_image_enc}}
+        TAGGED_IMAGE: ${{steps.encode.outputs.tagged_image_enc}}
       run: |
         echo "Docker Image: $(echo $TAGGED_IMAGE | base64 --decode | base64 --decode)"
