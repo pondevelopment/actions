@@ -64,3 +64,10 @@ runs:
         build-args: |
           "NPM_TOKEN=${{ inputs.NPM_REGISTRY_TOKEN }}"
           "NODE_ENVIRONMENT=${{inputs.NODE_ENVIRONMENT}}"
+
+    - name: Logging
+      shell: bash
+      env:
+        TAGGED_IMAGE: ${{ steps.prepare.outputs.tagged_image }}
+      run: |
+        echo "Docker Image: $TAGGED_IMAGE" 
