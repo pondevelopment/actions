@@ -1,0 +1,19 @@
+name: "Short-SHA"
+description: "Returns the Git Short-SHA"
+inputs:
+  GITHUB_SHA:
+    required: true
+    description: "The commit SHA"
+outputs:
+  SHORT_SHA: 
+    description: "The Short Hash"
+    value: ${{ steps.short-sha.outputs.SHORTHASH}}
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+    - name: Set SHA_SHORT
+      id: short-sha
+      shell: bash
+      run: |
+        echo ::set-output name=SHORTHASH::$(git rev-parse --short "$inputs.GITHUB_SHA")
