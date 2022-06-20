@@ -18,7 +18,7 @@ inputs:
     required: true
     description: "the tag provided for the docker container"
 outputs:
-  DOCKER_IMAGE:
+  DOCKER_IMAGE_ENC:
     description: "The docker image url - base64 encoded"
     value: ${{steps.encode.outputs.tagged_image_enc}}
 
