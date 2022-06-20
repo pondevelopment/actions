@@ -20,7 +20,7 @@ inputs:
 outputs:
   DOCKER_IMAGE:
     description: "The docker image url - base64 encoded"
-    value: ${{steps.prepare.outputs.tagged_image_enc}}
+    value: ${{steps.encode.outputs.tagged_image_enc}}
 
 runs:
   using: "composite"
