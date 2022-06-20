@@ -19,8 +19,8 @@ inputs:
     description: "the tag provided for the docker container"
 outputs:
   DOCKER_IMAGE:
-    description: "The docker image url"
-    value: ${{steps.prepare.outputs.tagged_image}}
+    description: "The docker image url - base64 encoded"
+    value: $(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64)
 
 runs:
   using: "composite"
