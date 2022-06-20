@@ -46,10 +46,9 @@ runs:
         echo ::set-output name=tag::${TAG}
 
     - name: Build development image
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v3
       with:
         context: .
-        builder: ${{ steps.buildx.outputs.name }}
         file: Dockerfile
         push: true
         # Note: load is used to store the image in the local docker daemon for use in another step
