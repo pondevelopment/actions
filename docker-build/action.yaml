@@ -71,4 +71,4 @@ runs:
         TAGGED_IMAGE: $(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64)
       run: |
         echo "Docker Image:"
-        echo "$TAGGED_IMAGE" | base64 --decode 
+        echo `echo $TAGGED_IMAGE | base64 --decode`
