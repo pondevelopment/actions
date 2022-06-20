@@ -7,13 +7,14 @@ inputs:
 outputs:
   SHORT_SHA: 
     description: "The Short Hash"
-    value: ${{ steps.short-sha.outputs.SHORTHASH}}
+    value: ${{ steps.short-sha.outputs.short-sha}}
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
     - name: Set SHA_SHORT
       id: short-sha
       shell: bash
+      env:
+        GITHUB_SHA: ${{ inputs.GITHUB_SHA }}
       run: |
-        echo ::set-output name=SHORTHASH::$(git rev-parse --short "$inputs.GITHUB_SHA")
+        echo ::set-output name=short-sha::$(git rev-parse --short "$inputs.GITHUB_SHA")
