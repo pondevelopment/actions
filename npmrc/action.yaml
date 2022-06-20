@@ -1,0 +1,22 @@
+name: ".npmrc"
+description: "Create Pon Development .npmrc"
+inputs:
+  NPM_REGISTRY_TOKEN:
+    required: true
+    description: "Your personal access token - PAT"
+  WORKING_DIRECTORY:
+    required: true
+    default: '.'
+    description: "Where to create it"
+runs:
+  using: "composite"
+  steps:
+    - name: Create npmrc file
+      shell: bash
+      env:
+        workspace: ${{ inputs.WORKING_DIRECTORY }}
+      run: |
+        echo -e "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" >> ${{ env.workspace }}/.npmrc
+        echo -e "@pondevelopment:registry=https://npm.pkg.github.com/" >> ${{ env.workspace }}/.npmrc
+        echo -e "@ponbike:registry=https://npm.pkg.github.com/" >> ${{ env.workspace }}/.npmrc
+        echo -e "@pondigitalsolutions:registry=https://npm.pkg.github.com/" >> ${{ env.workspace }}/.npmrc
