@@ -8,10 +8,6 @@ inputs:
     required: true
     default: "16.14"
     description: "The node version you would like to test"
-outputs:
-  SHORT_SHA: 
-    description: "The Short Hash"
-    value: ${{ steps.short-sha.outputs.short-sha}}
 runs:
   using: "composite"
   steps:
@@ -33,8 +29,3 @@ runs:
       env:
         CI: "true"
         NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
-    - name: Set SHA_SHORT
-      id: short-sha
-      shell: bash
-      run: |
-        echo ::set-output name=short-sha::$(git rev-parse --short "$GITHUB_SHA")
