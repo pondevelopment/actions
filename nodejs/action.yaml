@@ -5,17 +5,25 @@ inputs:
     required: true
     description: "Your personal access token - PAT"
   NODE_VERSION:
-    required: true
-    default: "16.14"
+    required: false
+    default: "0"
     description: "The node version you would like to test"
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ inputs.NODE_VERSION }}
+    - name: Use Node.js - ${{ inputs.NODE_VERSION }}
+      if: ${{ inputs.NODE_VERSION != '0' }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.NODE_VERSION }}
+      env:
+        NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
+    - name: Use Node.js Own version
+      if: ${{ inputs.NODE_VERSION == '0' }}
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: '.nvmrc'
       env:
         NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
     - name: npm install, build, and test
