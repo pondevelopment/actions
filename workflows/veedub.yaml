@@ -1,0 +1,35 @@
+name: Deployment through VeeDub
+
+on:
+  workflow_call:
+    inputs: 
+      DOCKER_IMAGE_ENCODED:
+        required: true
+      DOCKER_CONTAINER_REGISTRY_USER:
+        required: true
+        default: lukepon
+    secrets:
+      GCP_DEV_VCS_EVENT_PROJECT_ID:
+        required: true
+      GCP_DEV_VCS_EVENT_KEY:
+        required: true
+      DOCKER_CONTAINER_REGISTRY_TOKEN:
+        required: true    
+
+jobs:
+  name: deploy the image
+  runs-on: ubuntu-latest
+  container: 
+    image: ghcr.io/pondigitalsolutions/gitaction-event-container:latest
+    env:
+      GCP_PROJECT: ${{secrets.GCP_DEV_VCS_EVENT_PROJECT_ID}}
+      PUBSUB_TOPIC: vcs_event
+      GCP_SA_KEY: ${{ secrets.GCP_DEV_VCS_EVENT_KEY }}
+      DOCKER_IMAGE_ENCODED: ${{ inputs.DOCKER_IMAGE_ENCODED }}
+    credentials:
+      username: ${{ inputs.DOCKER_CONTAINER_REGISTRY_USER }}
+      password: ${{ secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
+  steps:
+  - name: send-event
+    run: |
+      /app/gitevent

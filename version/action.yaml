@@ -1,0 +1,34 @@
+name: Version
+description: Get the version of the program
+outputs:
+  version:
+    value: ${{steps.version.outputs.version}}
+    description: Version from package.json, for easy reuse
+  short-hash:
+    value: ${{steps.version.outputs.short-hash}}
+    description: Short-hash from git commit, for easy matching back build to commit
+  version-tag:
+    value: ${{steps.version.outputs.version-tag}}
+    description: Combined version / shorthash for tagging of artifacts
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v1
+    - name: Retrieve version
+      id: version
+      shell: bash
+      run: |
+        echo "::set-output name=VERSION::$(sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json)"
+    - name: Get short-hash
+      id: short-hash
+      shell: bash
+      run: |
+        echo ::set-output name=SHORTHASH::$(git rev-parse --short "$GITHUB_SHA")
+    - name: Create version-tag
+      id: version-tag
+      shell: bash
+      run: |
+        tag=${{ steps.version.outputs.VERSION }}-${{ steps.short-hash.outputs.SHORTHASH }}
+        echo $tag
+        echo "::set-output name=VERSION_TAG::$tag"
