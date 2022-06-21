@@ -49,7 +49,6 @@ runs:
         TAG=${{ inputs.DOCKER_TAG }}
         IMAGE="eu.gcr.io/${{ inputs.PROJECT_ID }}/${{ inputs.SERVICE_NAME }}"
         echo ::set-output name=tagged_image::${IMAGE}:${TAG}
-        echo ::set-output name=tagged_image_enc::$(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64 | base64)
         echo ::set-output name=tag::${TAG}
     
     - name: Encode
@@ -77,4 +76,4 @@ runs:
       env:
         TAGGED_IMAGE: ${{steps.encode.outputs.tagged_image_enc}}
       run: |
-        echo "Docker Image: $(echo $TAGGED_IMAGE | base64 --decode | base64 --decode)"
+        echo "Docker Image: ${{ env.TAGGED_IMAGE }}"
