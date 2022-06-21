@@ -2,13 +2,13 @@ name: Version
 description: Get the version of the program
 outputs:
   version:
-    value: ${{steps.version.outputs.version}}
+    value: ${{steps.version.outputs.VERSION}}
     description: Version from package.json, for easy reuse
   short-hash:
-    value: ${{steps.version.outputs.short-hash}}
+    value: ${{steps.short-hash.outputs.SHORTHASH}}
     description: Short-hash from git commit, for easy matching back build to commit
   version-tag:
-    value: ${{steps.version.outputs.version-tag}}
+    value: ${{steps.version-tag.outputs.VERSION_TAG}}
     description: Combined version / shorthash for tagging of artifacts
 
 runs:
