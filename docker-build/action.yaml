@@ -55,7 +55,7 @@ runs:
       shell: bash
       id: encode
       run: |
-        echo ::set-output name=tagged_image_enc::$(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64 | base64)
+        echo ::set-output name=tagged_image_enc::$(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64 -w0 | base64 -w0 )
 
     - name: Build development image
       uses: docker/build-push-action@v3
