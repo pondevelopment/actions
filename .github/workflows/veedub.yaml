@@ -7,6 +7,7 @@ on:
         required: true
         type: string
       DOCKER_CONTAINER_REGISTRY_USER:
+        required: false
         default: lukepon
         type: string
     secrets:
@@ -19,7 +20,7 @@ on:
 
 jobs:
   veedub:
-    name: deploy the image
+    name: Deploy the Image
     runs-on: ubuntu-latest
     container: 
       image: ghcr.io/pondigitalsolutions/gitaction-event-container:latest
