@@ -20,9 +20,10 @@ runs:
         node-version-file: '.nvmrc'
       env:
         NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
-    - run: npm ci
-        npm run lint
-        npm test
+    - run: |
+        npm ci
+        npm run lint:report
+        npm run test
       shell: bash
       env:
         CI: "true"
