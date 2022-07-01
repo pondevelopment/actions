@@ -26,16 +26,12 @@ runs:
     uses: actions/setup-node@v3
     with:
       node-version-file: '.nvmrc'
-      # Let setup-node generate the .npmrc
-      always-auth: true
-      registry-url: https://npm.pkg.github.com/
-      scope: '@pondevelopment'
   # Skip post-install scripts here, as a malicious
-  # script could steal NODE_AUTH_TOKEN.
+  # script could steal NPM_TOKEN.
   - run: npm ci --ignore-scripts
     shell: bash
     env:
-      NODE_AUTH_TOKEN: ${{ inputs.NPM_TOKEN }}
+      NPM_TOKEN: ${{ inputs.NPM_TOKEN }}
   # `npm rebuild` will run all those post-install scripts for us.
   - run: npm rebuild && npm run prepare --if-present
     shell: bash
