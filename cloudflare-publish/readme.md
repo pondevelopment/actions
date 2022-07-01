@@ -38,6 +38,6 @@ This example uses this action and passes the artefact name to a publication acti
         DIST_NAME:  ${{ needs.dist.outputs.dist }}
         BRANCH_NAME: env.BRANCH_NAME
         COMMIT_HASH: ${{ needs.version.outputs.SHORT_HASH }}
-        ACCOUNT_ID: 2417b166e4a2a25705ff09dd4816f12e
+        ACCOUNT_ID: 1234b123e4a1a12345ff01aa4321f12a
         CF_WRANGLER_TOKEN: ${{ secrets.CF_WRANGLER_TOKEN }}
 ```
