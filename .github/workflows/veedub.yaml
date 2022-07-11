@@ -10,13 +10,26 @@ on:
         required: false
         default: lukepon
         type: string
+      TECHNICAL:
+        required: true
+        type: string
+      FINANCE:
+        required: true
+        type: string
     secrets:
       GCP_DEV_VCS_EVENT_PROJECT_ID:
         required: true
       GCP_DEV_VCS_EVENT_KEY:
         required: true
       DOCKER_CONTAINER_REGISTRY_TOKEN:
-        required: true    
+        required: true
+      CONFIGURATION_ID:
+        required: true
+      ORGANAZATION:
+        required: true
+      BUSINESS:
+        required: true
+
 
 jobs:
   veedub:
@@ -29,6 +42,11 @@ jobs:
         PUBSUB_TOPIC: vcs_event
         GCP_SA_KEY: ${{ secrets.GCP_DEV_VCS_EVENT_KEY }}
         DOCKER_IMAGE_ENCODED: ${{ inputs.DOCKER_IMAGE_ENCODED }}
+        ORGANAZATION: ${{ secrets.ORGANIZATION }}
+        BUSINESS: ${{ secrets.BUSINESS }}
+        CONFIGURATION_ID: ${{ secrets.CONFIGURATION_ID }}
+        FINANCE: ${{ inputs.FINANCE }}
+        TECHNICAL: ${{ inputs.TECHNICAL }}
       credentials:
         username: ${{ inputs.DOCKER_CONTAINER_REGISTRY_USER }}
         password: ${{ secrets.DOCKER_CONTAINER_REGISTRY_TOKEN }}
