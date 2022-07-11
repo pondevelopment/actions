@@ -25,7 +25,7 @@ on:
         required: true
       CONFIGURATION_ID:
         required: true
-      ORGANAZATION:
+      ORGANIZATION:
         required: true
       BUSINESS:
         required: true
@@ -42,7 +42,7 @@ jobs:
         PUBSUB_TOPIC: vcs_event
         GCP_SA_KEY: ${{ secrets.GCP_DEV_VCS_EVENT_KEY }}
         DOCKER_IMAGE_ENCODED: ${{ inputs.DOCKER_IMAGE_ENCODED }}
-        ORGANAZATION: ${{ secrets.ORGANIZATION }}
+        ORGANIZATION: ${{ secrets.ORGANIZATION }}
         BUSINESS: ${{ secrets.BUSINESS }}
         CONFIGURATION_ID: ${{ secrets.CONFIGURATION_ID }}
         FINANCE: ${{ inputs.FINANCE }}
