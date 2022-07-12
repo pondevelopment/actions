@@ -1,4 +1,4 @@
-name: "Node CI"
+name: "Node Publish"
 description: "Publish NodeJS package"
 inputs:
   NPM_REGISTRY_TOKEN:
