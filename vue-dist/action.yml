@@ -1,0 +1,50 @@
+name: "Vue Distribution"
+description: "Build a vue distrution and upload an artifact for it"
+
+inputs:
+  version:
+    description: "Version tag for the creation of the artifact."
+    required: true
+  NPM_TOKEN:
+    description: "Secret for grabbing dependencies from private repo's"
+    required: true
+outputs:
+  dist:
+    value: ${{steps.artifact-name.outputs.NAME}}
+    description: Distribution name, for picking up the artefact in the next step
+
+runs:
+  using: "composite"
+  # outputs:
+  #   dist: ${{ env.DIST_NAME }}
+  steps:
+  - shell: bash
+    run: echo '::set-output name=NAME::dist.${{ inputs.version }}'
+    id: artifact-name
+  - uses: actions/checkout@v3
+  - name: Use Node.js
+    uses: actions/setup-node@v3
+    with:
+      node-version-file: '.nvmrc'
+  # Skip post-install scripts here, as a malicious
+  # script could steal NPM_TOKEN.
+  - run: npm ci --ignore-scripts
+    shell: bash
+    env:
+      NPM_TOKEN: ${{ inputs.NPM_TOKEN }}
+  # `npm rebuild` will run all those post-install scripts for us.
+  - run: npm rebuild && npm run prepare --if-present
+    shell: bash
+  - run: npm run build
+    shell: bash
+    env:
+      CI: "true"
+  - name: Archive production artifacts
+    id: dist
+    uses: actions/upload-artifact@v3
+    with:
+      name: ${{steps.artifact-name.outputs.NAME}}
+      retention-days: 3
+      path: |
+        dist
+        !dist/**/*.md
