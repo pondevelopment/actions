@@ -12,6 +12,10 @@ inputs:
     required: false
     default: ''
     description: "Set NODE_CACHE to 'npm' to enabled cached dependencies"
+  MODULES_CACHE:
+    required: false
+    default: 'false'
+    description: "If set to 'true', cache node_modules"
 
 outputs:
   dist:
@@ -32,14 +36,30 @@ runs:
     with:
       node-version-file: '.nvmrc'
       cache:  ${{ inputs.NODE_CACHE }}
+  - name: Cache node modules
+    if: ${{ inputs.MODULES_CACHE == 'true' }}
+    id: cache-nodemodules
+    uses: actions/cache@v2
+    env:
+      cache-name: cache-node-modules
+    with:
+      # caching node_modules
+      path: node_modules
+      key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      restore-keys: |
+        ${{ runner.os }}-build-${{ env.cache-name }}-
+        ${{ runner.os }}-build-
+        ${{ runner.os }}-
   # Skip post-install scripts here, as a malicious
   # script could steal NPM_TOKEN.
   - run: npm ci --ignore-scripts
+    if: steps.cache-nodemodules.outputs.cache-hit != 'true'
     shell: bash
     env:
       NPM_TOKEN: ${{ inputs.NPM_TOKEN }}
   # `npm rebuild` will run all those post-install scripts for us.
   - run: npm rebuild && npm run prepare --if-present
+    if: steps.cache-nodemodules.outputs.cache-hit != 'true'
     shell: bash
   - run: npm run build
     shell: bash
