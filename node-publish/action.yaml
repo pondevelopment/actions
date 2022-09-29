@@ -7,7 +7,7 @@ inputs:
   NODE_CACHE:
     required: false
     default: ''
-    description: "Use caching on node-setup to reduce build time"
+    description: "Set NODE_CACHE to 'npm' to enabled cached dependencies"
 runs:
   using: "composite"
   steps:
