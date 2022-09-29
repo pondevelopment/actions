@@ -6,7 +6,7 @@ inputs:
     description: "Your personal access token - PAT"
   NODE_CACHE:
     required: false
-    default: 'disabled'
+    default: ''
     description: "Use caching on node-setup to reduce build time"
 runs:
   using: "composite"

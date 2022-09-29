@@ -10,7 +10,7 @@ inputs:
     description: "The node version you would like to test"
   NODE_CACHE:
     required: false
-    default: 'disabled'
+    default: ''
     description: "Use caching on node-setup to reduce build time"
 runs:
   using: "composite"

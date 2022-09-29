@@ -10,7 +10,7 @@ inputs:
     required: true
   NODE_CACHE:
     required: false
-    default: 'disabled'
+    default: ''
     description: "Use caching on node-setup to reduce build time"
 
 outputs:
