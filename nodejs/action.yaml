@@ -8,6 +8,10 @@ inputs:
     required: false
     default: "0"
     description: "The node version you would like to test"
+  NODE_CACHE:
+    required: false
+    default: 'disabled'
+    description: "Use caching on node-setup to reduce build time"
 runs:
   using: "composite"
   steps:
@@ -24,6 +28,7 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version-file: '.nvmrc'
+        cache:  ${{ inputs.NODE_CACHE }}
       env:
         NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
     - name: npm install, build, and test

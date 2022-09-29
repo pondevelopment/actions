@@ -8,6 +8,11 @@ inputs:
   NPM_TOKEN:
     description: "Secret for grabbing dependencies from private repo's"
     required: true
+  NODE_CACHE:
+    required: false
+    default: 'disabled'
+    description: "Use caching on node-setup to reduce build time"
+
 outputs:
   dist:
     value: ${{steps.artifact-name.outputs.NAME}}
@@ -26,6 +31,7 @@ runs:
     uses: actions/setup-node@v3
     with:
       node-version-file: '.nvmrc'
+      cache:  ${{ inputs.NODE_CACHE }}
   # Skip post-install scripts here, as a malicious
   # script could steal NPM_TOKEN.
   - run: npm ci --ignore-scripts
