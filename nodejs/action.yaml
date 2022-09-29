@@ -11,7 +11,11 @@ inputs:
   NODE_CACHE:
     required: false
     default: ''
-    description: "Use caching on node-setup to reduce build time"
+    description: "Set NODE_CACHE to 'npm' to enabled cached dependencies"
+  MODULES_CACHE:
+    required: false
+    default: 'false'
+    description: "If set to 'true', cache node_modules"
 runs:
   using: "composite"
   steps:
@@ -31,7 +35,29 @@ runs:
         cache:  ${{ inputs.NODE_CACHE }}
       env:
         NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
-    - name: npm install, build, and test
+    - name: Cache node modules
+      if: ${{ inputs.MODULES_CACHE == 'true' }}
+      id: cache-nodemodules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        # caching node_modules
+        path: node_modules
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - name: npm install
+      if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+      run: |
+        npm ci
+      shell: bash
+      env:
+        CI: "true"
+        NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
+    - name: npm build, and test
       run: |
         npm ci
         npm run vulnerabilities
