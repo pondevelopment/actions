@@ -59,7 +59,6 @@ runs:
         NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
     - name: npm build, and test
       run: |
-        npm ci
         npm run vulnerabilities
         npm run lint:report
         npm run cpd
