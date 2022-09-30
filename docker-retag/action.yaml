@@ -1,0 +1,73 @@
+name: "Docker Retag"
+description: "Retag a docker image and push it to GCR"
+
+inputs:
+  GCP_SA_KEY:
+    required: true
+    description: "the secret serviceaccount json"
+  PROJECT_ID:
+    required: true
+    description: "gcp project target for the container"
+  SERVICE_NAME:
+    required: true
+    description: "the name provided to the docker container"
+  NPM_REGISTRY_TOKEN:
+    required: true
+    description: "Your personal access token - PAT"
+  DOCKER_TAG:
+    required: true
+    description: "the tag provided for the docker container"
+  DOCKER_IMAGE_ENCODED:
+    required: true
+    description: "the original docker image"
+outputs:
+  DOCKER_IMAGE_ENC:
+    description: "The docker image url - base64 encoded"
+    value: ${{steps.encode.outputs.tagged_image_enc}}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Decode
+      shell: bash
+      id: decode
+      run: |
+        echo ::set-output name=tagged_image_original::$(echo -n '${{ inputs.DOCKER_IMAGE_ENCODED}}' | base64 -d | base64 -d )
+
+    - id: "auth"
+      uses: "google-github-actions/auth@v0"
+      with:
+        credentials_json: "${{ inputs.GCP_SA_KEY }}"
+
+    - name: Setup Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: ${{ inputs.PROJECT_ID }}
+        export_default_credentials: true # Set to true to authenticate the Cloud Run action
+
+    - name: Authorize Docker push
+      shell: bash
+      run: gcloud auth configure-docker --quiet
+
+    - name: Prepare
+      shell: bash
+      id: prepare
+      run: |
+        TAG=${{ inputs.DOCKER_TAG }}
+        IMAGE="eu.gcr.io/${{ inputs.PROJECT_ID }}/${{ inputs.SERVICE_NAME }}"
+        echo ::set-output name=tagged_image::${IMAGE}:${TAG}
+        echo ::set-output name=tag::${TAG}
+    
+    - name: Encode
+      shell: bash
+      id: encode
+      run: |
+        echo ::set-output name=tagged_image_enc::$(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64 -w0 | base64 -w0 )
+
+    - name: ReTag
+      shell: bash
+      id: retag
+      run: |
+        docker pull -q ${{steps.decode.outputs.tagged_image_original}}
+        docker tag ${{steps.decode.outputs.tagged_image_original}} ${{steps.prepare.outputs.tagged_image}}
+        docker push ${{steps.prepare.outputs.tagged_image}}
