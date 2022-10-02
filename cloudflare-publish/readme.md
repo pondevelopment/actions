@@ -1,8 +1,12 @@
 # Cloudflare Publish
 
-This composite action takes an artifact as input and publishes the contents to Cloudflare Pages. Depending on the setup of your Cloudflare environment it will either report a feature specific url, or it will publish to production.
+This composite action takes an artifact as input and publishes the contents to
+Cloudflare Pages. Depending on the setup of your Cloudflare environment it will
+either report a feature specific url, or it will publish to production.
 
-### Inputs:
+## Configuration
+
+To run this task the following settings are expected:
 
 - `DIST_NAME`:
     description: "Name of the artifact to download",
