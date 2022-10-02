@@ -4,6 +4,9 @@ This composite action takes an artifact as input and publishes the contents to
 Cloudflare Pages. Depending on the setup of your Cloudflare environment it will
 either report a feature specific url, or it will publish to production.
 
+Works together with [vue-dist][vue] to publish static vue apps
+to cloudflare pages hosting.
+
 ## Configuration
 
 To run this task the following settings are expected:
@@ -45,3 +48,5 @@ This example uses this action and passes the artefact name to a publication acti
         ACCOUNT_ID: 1234b123e4a1a12345ff01aa4321f12a
         CF_WRANGLER_TOKEN: ${{ secrets.CF_WRANGLER_TOKEN }}
 ```
+
+[vue]: ../vue-dist/readme.md

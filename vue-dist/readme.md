@@ -4,6 +4,9 @@ This composite action is used for generating an artifact for a vue distribution.
 It assumes the existence of a `.nvmrc` file to provide the node version to use.
 A few other inputs are requested.
 
+Works together with [cloudflare-publish][cloudflare] to publish static vue apps
+to cloudflare pages hosting.
+
 ## Configuration
 
 To run this task the following settings are expected:
@@ -34,7 +37,7 @@ generate an artifact using the supplied `version` input.
 The resulting output is the name of the artifact, which can be used by follow up
 workflows to download the build and use it.
 
-See the [cloudflare-publish](../cloudflare-publish/readme.md) for an example of
+See the [cloudflare-publish][cloudflare] for an example of
 how to use the output of this action.
 
 ### Example
@@ -51,3 +54,5 @@ This example uses this action and passes the artefact name to a publication acti
         version: ${{ needs.version.outputs.version }}
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 ```
+
+[cloudflare]: ../cloudflare-publish/readme.md
