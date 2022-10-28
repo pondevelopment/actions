@@ -57,11 +57,29 @@ runs:
       env:
         CI: "true"
         NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
-    - name: npm build, and test
+    - name: npm audit
       run: |
         npm run vulnerabilities
+      shell: bash
+      env:
+        CI: "true"
+        NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
+    - name: npm lint
+      run: |
         npm run lint:report
+      shell: bash
+      env:
+        CI: "true"
+        NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
+    - name: npm copy paste detection
+      run: |
         npm run cpd
+      shell: bash
+      env:
+        CI: "true"
+        NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
+    - name: npm test
+      run: |        
         npm test
       shell: bash
       env:
