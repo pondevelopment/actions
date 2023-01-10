@@ -19,16 +19,16 @@ runs:
       id: version
       shell: bash
       run: |
-        echo "::set-output name=VERSION::$(sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json)"
+        echo "VERSION=$(sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json)" >> $GITHUB_OUTPUT
     - name: Get short-hash
       id: short-hash
       shell: bash
       run: |
-        echo ::set-output name=SHORT_HASH::$(git rev-parse --short "$GITHUB_SHA")
+        echo "SHORT_HASH=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_OUTPUT
     - name: Create version-tag
       id: version-tag
       shell: bash
       run: |
         tag=${{ steps.version.outputs.VERSION }}-${{ steps.short-hash.outputs.SHORT_HASH }}
         echo $tag
-        echo "::set-output name=VERSION_TAG::$tag"
+        echo "VERSION_TAG=$tag" >> $GITHUB_OUTPUT

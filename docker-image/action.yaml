@@ -26,11 +26,11 @@ runs:
       run: |
         TAG=${{ inputs.DOCKER_TAG }}
         IMAGE="eu.gcr.io/${{ inputs.PROJECT_ID }}/${{ inputs.SERVICE_NAME }}"
-        echo ::set-output name=tagged_image::${IMAGE}:${TAG}
-        echo ::set-output name=tag::${TAG}
+        echo "tagged_image=${IMAGE}:${TAG}" >> $GITHUB_OUTPUT
+        echo "tag=${TAG}" >> $GITHUB_OUTPUT
     
     - name: Encode
       shell: bash
       id: encode
       run: |
-        echo ::set-output name=tagged_image_enc::$(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64 -w0 | base64 -w0 )
+        echo "tagged_image_enc=$(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64 -w0 | base64 -w0 )" >> $GITHUB_OUTPUT
