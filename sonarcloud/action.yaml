@@ -23,7 +23,6 @@ runs:
     - run: |
         npm ci
         npm run lint:report
-        touch .env
         npm run test
       shell: bash
       env:
