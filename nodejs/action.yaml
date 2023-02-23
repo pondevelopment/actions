@@ -79,8 +79,7 @@ runs:
         CI: "true"
         NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
     - name: npm test
-      run: |   
-        touch .env
+      run: |
         npm test
       shell: bash
       env:
