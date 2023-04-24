@@ -14,22 +14,8 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version-file: '.nvmrc'
-      env:
-        NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
-    - run: |
-        npm ci
-        npm run lint:report
-        npm run test
-      shell: bash
-      env:
-        CI: "true"
-        NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
     - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
+      uses: sonarsource/sonarcloud-github-action@v1.8
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ inputs.SONAR_TOKEN }}
