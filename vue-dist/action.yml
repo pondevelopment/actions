@@ -28,7 +28,7 @@ runs:
   #   dist: ${{ env.DIST_NAME }}
   steps:
   - shell: bash
-    run: echo '::set-output name=NAME::dist.${{ inputs.version }}'
+    run: echo "NAME=dist.${{ inputs.version }}" >> $GITHUB_OUTPUT
     id: artifact-name
   - uses: actions/checkout@v3
   - name: Use Node.js
