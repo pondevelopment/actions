@@ -27,7 +27,7 @@ runs:
       name:  ${{ inputs.DIST_NAME }}
       path: output
   - name: Publish app
-    uses: cloudflare/wrangler-action@2.0.0
+    uses: cloudflare/wrangler-action-node@1.1.1
     with:
       apiToken: ${{ inputs.CF_WRANGLER_TOKEN }}
       accountId: ${{ inputs.ACCOUNT_ID }}
