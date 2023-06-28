@@ -31,7 +31,7 @@ runs:
     with:
       apiToken: ${{ inputs.CF_WRANGLER_TOKEN }}
       accountId: ${{ inputs.ACCOUNT_ID }}
-      command: pages publish output --project-name cartman-frontend --branch ${{ inputs.BRANCH_NAME }} --commit-hash ${{ inputs.COMMIT_HASH }} | tee -a output.log
+      command: pages deploy output --project-name cartman-frontend --branch ${{ inputs.BRANCH_NAME }} --commit-hash ${{ inputs.COMMIT_HASH }} | tee -a output.log
   - name: Report output
     shell: bash
     run: tail -n 3 output.log >> $GITHUB_STEP_SUMMARY
