@@ -29,7 +29,7 @@ runs:
         CI: "true"
         NPM_TOKEN: ${{ inputs.NPM_REGISTRY_TOKEN }}
     - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@v1.8
+      uses: sonarsource/sonarcloud-github-action@v2.1.1
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ inputs.SONAR_TOKEN }}
