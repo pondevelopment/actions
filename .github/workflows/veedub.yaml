@@ -8,7 +8,7 @@ on:
         type: string
       DOCKER_CONTAINER_REGISTRY_USER:
         required: false
-        default: lukepon
+        default: pondsdevops
         type: string
       TECHNICAL:
         required: true
