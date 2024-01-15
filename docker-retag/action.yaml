@@ -35,12 +35,12 @@ runs:
         echo "tagged_image_original=$(echo -n '${{ inputs.DOCKER_IMAGE_ENCODED}}' | base64 -d | base64 -d )" >> $GITHUB_OUTPUT
 
     - id: "auth"
-      uses: "google-github-actions/auth@v0"
+      uses: "google-github-actions/auth@v2"
       with:
         credentials_json: "${{ inputs.GCP_SA_KEY }}"
 
     - name: Setup Cloud SDK
-      uses: google-github-actions/setup-gcloud@v0
+      uses: google-github-actions/setup-gcloud@v2
       with:
         project_id: ${{ inputs.PROJECT_ID }}
         export_default_credentials: true # Set to true to authenticate the Cloud Run action
