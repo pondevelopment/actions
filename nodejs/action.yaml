@@ -41,7 +41,7 @@ runs:
     - name: Cache node modules
       if: ${{ inputs.MODULES_CACHE == 'true' }}
       id: cache-nodemodules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       env:
         cache-name: cache-node-modules
       with:
