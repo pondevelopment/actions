@@ -1,0 +1,43 @@
+version: 2
+updates:
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      # Check for updates to GitHub Actions every week
+      interval: monthly
+
+  - package-ecosystem: github-actions
+    directory: /cloudflare-publish
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: github-actions
+    directory: /node-publish
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: github-actions
+    directory: /nodejs
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: github-actions
+    directory: /npmrc
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: github-actions
+    directory: /sonarcloud
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: github-actions
+    directory: /version
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: github-actions
+    directory: /vue-dist
+    schedule:
+      interval: monthly
