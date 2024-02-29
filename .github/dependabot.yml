@@ -1,10 +1,13 @@
 version: 2
+# This dependabot file will only generate runs on this specific repository, it wil have no impact on repositories depending on these actions.
+# The top-most config will check the workflow of this repository. It is recommended to copy this config to your own `dependabot.yml`.
+# Each custom action will need it's own config to be check by dependabot. As of this writing (2024/02/29), wild-card configs are not possible.
+
 updates:
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      # Check for updates to GitHub Actions every week
       interval: monthly
 
   - package-ecosystem: github-actions
