@@ -31,11 +31,11 @@ runs:
       path: output
   - name: Publish app
     uses: cloudflare/wrangler-action@v3
+    id: wrangler
     with:
       apiToken: ${{ inputs.CF_WRANGLER_TOKEN }}
       accountId: ${{ inputs.ACCOUNT_ID }}
-      preCommands: exec > >(tee output.log) 2>&1
       command: pages deploy output --project-name ${{ inputs.PROJECT_NAME }} --branch ${{ inputs.BRANCH_NAME }} --commit-hash ${{ inputs.COMMIT_HASH }}
   - name: Report output
     shell: bash
-    run: tail -n 3 output.log >> $GITHUB_STEP_SUMMARY
+    run: echo "${{ steps.wrangler.outputs.command-output }}" | tail -n 3 >> $GITHUB_STEP_SUMMARY
