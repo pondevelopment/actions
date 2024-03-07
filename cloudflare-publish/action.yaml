@@ -21,6 +21,14 @@ inputs:
     description: "The cloudflare registered project name"
     required: true
 
+outputs:
+  WRANGLER_OUT:
+    description: "The stdout logged from the wrangler action that was running"
+    value: ${{ steps.wrangler.outputs.command-output }}
+  CLOUDFLARE_URL:
+    description: "The URL of wranglers publication"
+    value: ${{ steps.url.outputs.CLOUDFLARE_URL }}
+
 runs:
   using: "composite"
   steps:
@@ -30,11 +38,16 @@ runs:
       name:  ${{ inputs.DIST_NAME }}
       path: output
   - name: Publish app
-    uses: demosjarco/wrangler-action-node@v1.1.1
+    uses: cloudflare/wrangler-action@v3
+    id: wrangler
     with:
       apiToken: ${{ inputs.CF_WRANGLER_TOKEN }}
       accountId: ${{ inputs.ACCOUNT_ID }}
-      command: pages deploy output --project-name ${{ inputs.PROJECT_NAME }} --branch ${{ inputs.BRANCH_NAME }} --commit-hash ${{ inputs.COMMIT_HASH }} | tee -a output.log
+      command: pages deploy output --project-name ${{ inputs.PROJECT_NAME }} --branch ${{ inputs.BRANCH_NAME }} --commit-hash ${{ inputs.COMMIT_HASH }}
   - name: Report output
     shell: bash
-    run: tail -n 3 output.log >> $GITHUB_STEP_SUMMARY
+    run: echo "${{ steps.wrangler.outputs.command-output }}" | tail -n 3 >> $GITHUB_STEP_SUMMARY
+  - name: Log URL
+    id: url
+    shell: bash
+    run: echo "CLOUDFLARE_URL=$(echo '${{ steps.wrangler.outputs.command-output }}' | tail -n 10 | grep -Eo 'https?://[^ >]+' | head -1)" >> $GITHUB_OUTPUT
