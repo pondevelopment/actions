@@ -105,6 +105,7 @@ jobs:
 
   update-image:
     runs-on: terxr-image-updater
+    environment: ${{ inputs.environment }}
     name: Update image
     needs:
       - version
@@ -122,4 +123,4 @@ jobs:
           gcp_project_id: ${{inputs.GCP_PROJECT_ID}}
           cloudrun_type: ${{inputs.CLOUDRUN_TYPE}}
           service_name: ${{inputs.SERVICE_NAME}}
-          image: ${{inputs.DOCKER_REGISTRY}}/${{ inputs.SERVICE_NAME }}:${{ needs.version.outputs.DOCKER_TAG }}
+          image: ${{ inputs.DOCKER_REGISTRY }}/${{ inputs.SERVICE_NAME }}:${{ needs.version.outputs.DOCKER_TAG }}
