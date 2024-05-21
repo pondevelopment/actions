@@ -11,10 +11,13 @@ on:
         type: string
       ARTIFACTS_PROJECT:
         required: true
+        type: string
       GCP_PROJECT_ID:
         required: true
+        type: string
       CLOUDRUN_TYPE:
         required: true
+        type: string
       ENVIRONMENT:
         required: false
         type: string
