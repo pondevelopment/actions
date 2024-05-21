@@ -1,0 +1,122 @@
+name: cloudrun deployment
+
+on:
+  workflow_call:
+    inputs:
+      SERVICE_NAME:
+        required: true
+        type: string
+      DOCKER_IMAGE:
+        required: true
+        type: string
+      ARTIFACTS_PROJECT:
+        required: true
+      GCP_PROJECT_ID:
+        required: true
+      CLOUDRUN_TYPE:
+        required: true
+      ENVIRONMENT:
+        required: false
+        type: string
+        default: development
+    secrets:
+      GCP_PUSHER_SV_KEY:
+        required: true
+      ACCESS_TOKEN_USER:
+        required: true
+      GO_MODULES_TOKEN:
+        required: true
+
+jobs:
+  version:
+    name: Version
+    runs-on: ubuntu-latest
+    outputs:
+      DOCKER_TAG: ${{ steps.version.outputs.SHORT_HASH }}
+    steps:
+      - name: Get the version
+        id: version
+        uses: pondevelopment/actions/version@main
+
+  build:
+    name: Build
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    needs: version
+    outputs:
+      DOCKER_IMAGE_ENCODED: ${{ steps.build_image.outputs.DOCKER_IMAGE_ENC }}
+      IMAGE_TAG: ${{ needs.version.outputs.DOCKER_TAG }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v0"
+        with:
+          credentials_json: "${{ secrets.GCP_PUSHER_SV_KEY }}"
+
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ inputs.ARTIFACTS_PROJECT }}
+          export_default_credentials: true # Set to true to authenticate the Cloud Run action
+
+      - name: Authorize Docker push
+        shell: bash
+        run: gcloud auth configure-docker europe-west4-docker.pkg.dev --quiet
+
+      - name: Prepare
+        shell: bash
+        id: prepare
+        run: |
+          TAG=${{ needs.version.outputs.DOCKER_TAG }}
+          IMAGE="${{ inputs.DOCKER_IMAGE }}/${{ inputs.SERVICE_NAME }}"
+          echo "tagged_image=${IMAGE}:${TAG}" >> $GITHUB_OUTPUT
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+
+      - name: Encode
+        shell: bash
+        id: encode
+        run: |
+          echo "tagged_image_enc=$(echo -n '${{steps.prepare.outputs.tagged_image}}' | base64 -w0 | base64 -w0 )" >> $GITHUB_OUTPUT
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          # Note: load is used to store the image in the local docker daemon for use in another step
+          # load: true
+          tags: ${{ steps.prepare.outputs.tagged_image }}
+          # build arg used for accessing the private repository for npm modules
+          build-args: |
+            "ACCESS_TOKEN_USERNAME=${{ secrets.ACCESS_TOKEN_USER }}"
+            "ACCESS_TOKEN_GO_MODULES=${{ secrets.GO_MODULES_TOKEN }}"
+
+      - name: Log Docker image
+        shell: bash
+        env:
+          TAGGED_IMAGE: ${{ steps.encode.outputs.tagged_image_enc }}
+        run: |
+          echo "Docker image: ${{ env.TAGGED_IMAGE }}"
+
+  update-image:
+    runs-on: terxr-image-updater
+    name: Update image
+    needs:
+      - version
+      - build
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Update image
+        uses: terxr-io/actions/imageupdate@cloudrun-image-update
+        id: update-image
+        with:
+          target_type: cloudrun
+          gcp_project_id: ${{inputs.GCP_PROJECT_ID}}
+          cloudrun_type: ${{inputs.CLOUDRUN_TYPE}}
+          service_name: ${{inputs.SERVICE_NAME}}
+          image: ${{inputs.DOCKER_IMAGE}}/${{ inputs.SERVICE_NAME }}:${{ needs.version.outputs.DOCKER_TAG }}
