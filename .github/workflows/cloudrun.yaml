@@ -72,7 +72,7 @@ jobs:
         id: prepare
         run: |
           TAG=${{ needs.version.outputs.DOCKER_TAG }}
-          IMAGE="${{ inputs.DOCKER_REGISTRY }}/${{ inputs.SERVICE_NAME }}"
+          IMAGE="${{ inputs.DOCKER_REGISTRY }}/${{ env.SERVICE_NAME }}"
           echo "tagged_image=${IMAGE}:${TAG}" >> $GITHUB_OUTPUT
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
 
@@ -120,7 +120,7 @@ jobs:
         id: update-image
         with:
           target_type: cloudrun
-          gcp_project_id: ${{inputs.GCP_PROJECT_ID}}
+          gcp_project_id: ${{env.GCP_PROJECT_ID}}
           cloudrun_type: ${{inputs.CLOUDRUN_TYPE}}
-          service_name: ${{inputs.SERVICE_NAME}}
-          image: ${{ inputs.DOCKER_REGISTRY }}/${{ inputs.SERVICE_NAME }}:${{ needs.version.outputs.DOCKER_TAG }}
+          service_name: ${{env.SERVICE_NAME}}
+          image: ${{ inputs.DOCKER_REGISTRY }}/${{ env.SERVICE_NAME }}:${{ needs.version.outputs.DOCKER_TAG }}
