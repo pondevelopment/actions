@@ -2,7 +2,7 @@ name: "CloudHub deployment"
 description: "Deploy an asset from Nexus to UAT/Production in CloudHub"
 
 inputs:
-  PROJECT_Group_ID:
+  PROJECT_GROUP_ID:
     required: true
     description: "Nexus group name for this project"
   REPO_NAME:
