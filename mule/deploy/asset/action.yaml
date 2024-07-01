@@ -26,6 +26,9 @@ inputs:
   ANYPOINT_ORG:
     required: true
     description: "The business group id in anypoint platform"
+  ANYPOINT_ENV:
+    required: true
+    description: "The yaml file env name in anypoint platform"
   ANYPOINT_ENV_ID:
     required: true
     description: "The environment id per business group in anypoint platform"
