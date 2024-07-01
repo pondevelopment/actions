@@ -1,0 +1,68 @@
+name: "CloudHub deployment"
+description: "Deploy an asset from Nexus to UAT/Production in CloudHub"
+
+inputs:
+  PROJECT_Group_ID:
+    required: true
+    description: "Nexus group name for this project"
+  REPO_NAME:
+    required: true
+    description: "The name of the project"
+  NEXUS_USERNAME:
+    required: true
+    description: "The username to access Nexus"
+  NEXUS_PASSWORD:
+    required: true
+    description: "The password to access Nexus"
+  VERSION:
+    required: true
+    description: "The asset version to deploy"
+  ANYPOINT_CLIENT_ID:
+    required: true
+    description: "The connected app client id to access anypoint platform"
+  ANYPOINT_CLIENT_SECRET:
+    required: true
+    description: "The connected app client secret to access anypoint platform"
+  ANYPOINT_ORG:
+    required: true
+    description: "The business group id in anypoint platform"
+  ANYPOINT_ENV_ID:
+    required: true
+    description: "The environment id per business group in anypoint platform"
+  PLATFORM_CLIENT_ID:
+    required: true
+    description: "The client id for PON GLOBAL"
+  PLATFORM_CLIENT_SECRET:
+    required: true
+    description: "The client secret for PON GLOBAL"
+  PROJECT_PREFIX:
+    required: true
+    description: "The project prefix per environment in CloudHub"
+  ENVIRONMENT:
+    required: true
+    description: "The deployed to CloudHub environment"
+  WORKER_SIZE:
+    required: true
+    description: "The amount of vCores"
+  WORKERS:
+    required: true
+    description: "The amount of workers"
+  RUNTIME:
+    required: true
+    description: "The runtime version"
+  START_APPLICATION:
+    required: true
+    description: "Identify if an UNDEPLOYED application should be started"
+  ENCRYPTION_KEY:
+    required: true
+    description: "The encryption key per business group"
+  COMMON_ENCRYPTION:
+    required: true
+    description: "The common utils encryption key"
+  NEW_GLOBAL_MAVEN_SETTINGS:
+    required: true
+    description: "The Nexus settings"
+
+runs:
+  using: node20
+  main: invoke-binary.js
