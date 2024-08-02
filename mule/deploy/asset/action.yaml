@@ -39,7 +39,7 @@ inputs:
     required: true
     description: "The client secret for PON GLOBAL"
   PROJECT_PREFIX:
-    required: true
+    required: false
     description: "The project prefix per environment in CloudHub"
   ENVIRONMENT:
     required: true
@@ -50,6 +50,12 @@ inputs:
   WORKERS:
     required: true
     description: "The amount of workers"
+  JAVA_VERSION:
+    required: true
+    description: "The java version name"
+  RELEASE_CHANNEL:
+    required: true
+    description: "The release channel name"
   RUNTIME:
     required: true
     description: "The runtime version"
