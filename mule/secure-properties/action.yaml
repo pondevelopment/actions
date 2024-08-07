@@ -1,0 +1,48 @@
+name: "Secure Properties Rotation"
+description: "updating properties file after rotating the gcp secret"
+
+inputs:
+  REPO_NAME:
+    required: true
+    description: "The name of the project"
+  REPO_OWNER:
+    required: true
+    description: "The repository owner"
+  ENVIRONMENT:
+    required: true
+    description: "The Mule environment to update"
+  ANYPOINT_ENV:
+    required: true
+    description: "The yaml file env name in anypoint platform"
+  ENCRYPTION_KEY:
+    required: true
+    description: "The encryption key per business group"
+  G_KEY:
+    required: true
+    description: "The GCP key"
+  GCP_PROJECT_NAME:
+    required: true
+    description: "The GCP project name"
+  GCP_SECRET_NAME:
+    required: true
+    description: "The GCP secret name"
+  EXTERNAL_G_KEY:
+    required: true
+    description: "The external GCP key"
+  EXTERNAL_PROJECT_NAME:
+    required: true
+    description: "The external GCP project name"
+  EXTERNAL_SECRET_NAME:
+    required: true
+    description: "The external GCP secret name"
+  NEW_GLOBAL_MAVEN_SETTINGS:
+    required: true
+    description: "The Nexus settings"
+  GITHUB_TOKEN:
+    required: true
+    description: "The Github Token"
+  
+
+runs:
+  using: node20
+  main: invoke-binary.js
