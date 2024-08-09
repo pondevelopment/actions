@@ -27,13 +27,13 @@ inputs:
     required: true
     description: "The GCP secret name"
   EXTERNAL_G_KEY:
-    required: true
+    required: false
     description: "The external GCP key"
   EXTERNAL_PROJECT_NAME:
-    required: true
+    required: false
     description: "The external GCP project name"
   EXTERNAL_SECRET_NAME:
-    required: true
+    required: false
     description: "The external GCP secret name"
   NEW_GLOBAL_MAVEN_SETTINGS:
     required: true
