@@ -1,0 +1,41 @@
+name: "Change CloudHub status"
+description: "Change app status in UAT/Production CloudHub"
+
+inputs:
+  REPO_NAME:
+    required: true
+    description: "The name of the project"
+  ANYPOINT_CLIENT_ID:
+    required: true
+    description: "The connected app client id to access anypoint platform"
+  ANYPOINT_CLIENT_SECRET:
+    required: true
+    description: "The connected app client secret to access anypoint platform"
+  ANYPOINT_ORG:
+    required: true
+    description: "The business group id in anypoint platform"
+  ANYPOINT_ENV_ID:
+    required: true
+    description: "The environment id per business group in anypoint platform"
+  PLATFORM_CLIENT_ID:
+    required: true
+    description: "The client id for PON GLOBAL"
+  PLATFORM_CLIENT_SECRET:
+    required: true
+    description: "The client secret for PON GLOBAL"
+  PROJECT_PREFIX:
+    required: false
+    description: "The project prefix per environment in CloudHub"
+  ENVIRONMENT:
+    required: true
+    description: "The CloudHub environment to change status"
+  STATUS_ACTION:
+    required: true
+    description: "The desired app status"
+  STATIC_IP:
+    required: true
+    description: "The static ip address if exists"
+
+runs:
+  using: node20
+  main: invoke-binary.js
