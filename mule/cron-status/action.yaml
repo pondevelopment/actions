@@ -14,7 +14,7 @@ inputs:
   ANYPOINT_ORG:
     required: true
     description: "The business group id in anypoint platform"
-  ANYPOINT_ENV_ID:
+  ANYPOINT_ENV:
     required: true
     description: "The environment id per business group in anypoint platform"
   PLATFORM_CLIENT_ID:
@@ -26,14 +26,11 @@ inputs:
   PROJECT_PREFIX:
     required: false
     description: "The project prefix per environment in CloudHub"
-  ENVIRONMENT:
-    required: true
-    description: "The CloudHub environment to change status"
   STATUS_ACTION:
     required: true
     description: "The desired app status"
   STATIC_IP:
-    required: true
+    required: false
     description: "The static ip address if exists"
 
 runs:
