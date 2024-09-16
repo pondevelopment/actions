@@ -35,6 +35,9 @@ inputs:
   EXTERNAL_SECRET_NAME:
     required: false
     description: "The external GCP secret name"
+  EXTERNAL_G_KEY_NAME:
+    required: false
+    description: "The Secret name of the external GCP key"
   NEW_GLOBAL_MAVEN_SETTINGS:
     required: true
     description: "The Nexus settings"
