@@ -44,6 +44,9 @@ inputs:
   GITHUB_TOKEN:
     required: true
     description: "The Github Token"
+  INITIAL_ENCRYPTION_VERSION:
+    required: false
+    description: "The initial encryption key version in GCP"
   
 
 runs:
