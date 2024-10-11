@@ -1,0 +1,24 @@
+name: "Nexus release"
+description: "Release a new asset to Nexus"
+
+inputs:
+  REPO_NAME:
+    required: true
+    description: "The name of the project"
+  REPO_OWNER:
+    required: true
+    description: "The repository owner"
+  IS_MAJOR_CHANGE:
+    required: true
+    description: "Identify if a major version need to be released"
+  NEW_GLOBAL_MAVEN_SETTINGS:
+    required: true
+    description: "The Nexus settings"
+  GITHUB_TOKEN:
+    required: true
+    description: "The Github Token"
+  
+
+runs:
+  using: node20
+  main: invoke-binary.js
