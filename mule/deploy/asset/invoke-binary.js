@@ -15,7 +15,3 @@ if ( spawnSyncReturns.status == 1){
 async function install() {
     await exec.exec(`npm install -g cdktf-cli@0.15.0`);
 }
-// var childProcess = require("child_process");
-// const binary = `mule-asset-deployment`
-// const mainScript = `${__dirname}/${binary}`
-// const spawnSyncReturns = childProcess.spawnSync(mainScript, { stdio: 'inherit' })
