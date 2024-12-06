@@ -44,6 +44,9 @@ inputs:
   ENVIRONMENT:
     required: true
     description: "The deployed to CloudHub environment"
+  REGION:
+    required: true
+    description: "The CloudHub region"
   WORKER_SIZE:
     required: true
     description: "The amount of vCores"
