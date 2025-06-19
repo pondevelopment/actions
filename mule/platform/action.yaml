@@ -14,6 +14,9 @@ inputs:
   ANYPOINT_CLIENT_SECRET:
     required: true
     description: "The connected app client secret to access anypoint platform"
+  ANYPOINT_OWNER_ID:
+    required: true
+    description: "Unique Identifier for user in anypoint platform"
   ANYPOINT_ORG:
     required: true
     description: "The business group id in anypoint platform"
@@ -29,9 +32,6 @@ inputs:
   PLATFORM_CLIENT_SECRET:
     required: true
     description: "The client secret for PON GLOBAL"
-  OWNER_ID:
-    required: true
-    description: "Unique Identifier for user in anypoint platform"
   
 
 runs:
