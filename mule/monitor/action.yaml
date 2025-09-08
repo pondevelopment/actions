@@ -1,0 +1,24 @@
+name: "Monitor vCores Availability"
+description: "Monitor vCores availability in Anypoint Platform per business group"
+
+inputs:
+  ANYPOINT_CLIENT_ID:
+    required: true
+    description: "The connected app client id to access anypoint platform"
+  ANYPOINT_CLIENT_SECRET:
+    required: true
+    description: "The connected app client secret to access anypoint platform"
+  CLOUDHUB_USAGE_ID:
+    required: true
+    description: "The business group usage id in anypoint platform"
+  ENVIRONMENT:
+    required: true
+    description: "The environment to monitor"
+  GITHUB_TOKEN:
+    required: true
+    description: "The Github Token"
+  
+
+runs:
+  using: node20
+  main: invoke-binary.js
