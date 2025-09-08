@@ -4,7 +4,7 @@ const exec = require('@actions/exec')
 core.addPath(`${__dirname}/terraform`);
 core.debug(`Installing CDKTF`);
 install();
-const binary = `vcores-monitor`
+const binary = `vcore`
 const mainScript = `${__dirname}/${binary}`
 const spawnSyncReturns = childProcess.spawnSync(mainScript, { stdio: ['inherit', 'inherit', 'pipe'] })
 console.log(spawnSyncReturns.status)
