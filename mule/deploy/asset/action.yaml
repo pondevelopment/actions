@@ -11,6 +11,9 @@ inputs:
   REPO_OWNER:
     required: true
     description: "The repository owner"
+  NEXUS_URL:
+    required: true
+    description: "The Nexus repository URL"
   NEXUS_USERNAME:
     required: true
     description: "The username to access Nexus"
